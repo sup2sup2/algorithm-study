@@ -1,0 +1,58 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+
+public class Solution {	
+	static int n;
+	static char[] tree;
+	static ArrayList<Character> save;
+	static boolean[] visited;
+	
+	static void dfs(int current) {
+		visited[current] = true;
+
+		if(2*current <= n && !visited[2*current] ) {
+			dfs(2*current);
+
+		}
+		save.add(tree[current]);
+		if(2*current+1 <= n && !visited[2*current+1] ) {
+			dfs(2*current+1);
+		}
+		return;
+		
+		
+	}
+	
+	public static void main(String args[]) throws Exception
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = 10;
+		for(int t = 1; t <= T; t++) {
+			n = Integer.parseInt(br.readLine());
+			
+			tree = new char[n+1];
+			save = new ArrayList<>();
+			visited = new boolean[n+1];
+			for(int i = 0; i < n; i++) {
+				String s = br.readLine();
+				StringTokenizer st = new StringTokenizer(s);
+				int a = Integer.parseInt(st.nextToken());
+				tree[a] = st.nextToken().charAt(0);
+			}
+			int current = 1;
+			dfs(current);
+			char[] arr = new char[n];
+			for(int i = 0; i < save.size(); i++) {
+				arr[i] = save.get(i);
+			}
+			String ans = new String(arr);
+			System.out.println("#" + t + " " + ans);
+		
+		}
+		
+	}
+}
