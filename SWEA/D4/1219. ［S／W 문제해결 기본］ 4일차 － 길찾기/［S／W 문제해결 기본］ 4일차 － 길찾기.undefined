@@ -1,0 +1,63 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+import java.util.StringTokenizer;
+
+
+public class Solution {	
+	static int n;
+	static int[][] map; 
+	static boolean[][] visited;
+	static int ans;
+	static void dfs(int curX) {
+		
+		if(curX == 99) {
+			ans = 1;
+			
+		}
+		
+		for(int i = 0; i< 100; i++) {
+			if(map[curX][i] == 1 && !visited[curX][i]) {
+				visited[curX][i] = true;
+				dfs(i);
+				
+			}
+		}
+	}
+	
+	
+ 	public static void main(String args[]) throws Exception
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = 10;
+		for(int t = 1; t <= T; t++) {
+			String s = br.readLine();
+			StringTokenizer st = new StringTokenizer(s);
+			int num = Integer.parseInt(st.nextToken());
+			n = Integer.parseInt(st.nextToken());
+			String str = br.readLine();
+			st = new StringTokenizer(str);
+			map = new int[100][100];
+			visited = new boolean[100][100];
+			for(int i = 0; i< n; i++) {
+					int x = Integer.parseInt(st.nextToken());
+					int y = Integer.parseInt(st.nextToken());
+					
+					map[x][y] = 1;
+					
+				
+			}
+			ans = 0;
+			for(int i = 0; i < 100; i++) {
+				if(map[0][i] == 1) {
+					dfs(i);
+				}
+			}
+			
+			System.out.println("#" + t + " " + ans);
+			
+		
+		}
+		
+	}
+}
