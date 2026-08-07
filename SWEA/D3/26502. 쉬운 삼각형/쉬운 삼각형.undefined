@@ -1,0 +1,57 @@
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.StringTokenizer;
+
+public class Solution {
+    static int n;
+    
+
+    
+    public static void main(String args[]) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine());
+        
+        for (int t = 1; t <= T; t++) {
+            n = Integer.parseInt(br.readLine());
+            List<Integer> listX = new LinkedList<>();
+            List<Integer> listY = new LinkedList<>();
+            
+            
+            for(int i = 0; i < n; i++) {
+            	String s = br.readLine();
+            	StringTokenizer st = new StringTokenizer(s);
+            	listX.add(Integer.parseInt(st.nextToken()));
+            	listY.add(Integer.parseInt(st.nextToken()));
+            
+            }
+            long max = Integer.MIN_VALUE;
+            for(int i = 0; i < n; i++) {
+            	
+            	for(int j = 0; j < n; j++) {
+            		if(listX.get(i).equals( listX.get(j))) {
+            			int side1 = Math.max(listY.get(i), listY.get(j)) - Math.min(listY.get(i), listY.get(i));
+            			
+            			for(int c = 0; c < n; c++) {
+            				if(listY.get(i).equals(listY.get(c))) {
+            					int side2 = Math.max(listX.get(i), listX.get(c)) - Math.min(listX.get(i), listX.get(c));
+            					max = Math.max(max, side1 * side2);
+            				}
+            				if(listY.get(j).equals(listY.get(c))) {
+            					int side2 = Math.max(listX.get(j), listX.get(c)) - Math.min(listX.get(j), listX.get(c));
+            					max = Math.max(max, side1 * side2);
+            				}
+            				
+            			}
+            		
+            		}
+            	}
+            }
+            
+            System.out.println(max);
+        }
+    }
+}
