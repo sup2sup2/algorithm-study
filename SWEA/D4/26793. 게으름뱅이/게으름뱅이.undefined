@@ -1,0 +1,40 @@
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class Solution {
+	
+    
+    public static void main(String args[]) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine());
+        StringBuilder sb = new StringBuilder();
+        for (int t = 1; t <= T; t++) {
+        	
+        	int n = Integer.parseInt(br.readLine());
+        	
+        	int[][] arr = new int[n][2];
+        	
+        	for(int i = 0; i < n; i++) {
+        		StringTokenizer st = new StringTokenizer(br.readLine());
+        		arr[i][0] = Integer.parseInt(st.nextToken());
+        		arr[i][1] = Integer.parseInt(st.nextToken());
+        		
+        	}
+        	
+        	Arrays.sort(arr, (a,b) -> Integer.compare(a[1], b[1]));
+        	int start = Integer.MAX_VALUE;
+        	int sum = 0;
+        	for(int i = 0; i < arr.length; i++) {
+        		sum += arr[i][0];
+        		start = Math.min(start, arr[i][1] - sum);
+        	}
+        	
+        	sb.append(start).append("\n");
+        	
+        }
+        System.out.print(sb);
+    }
+}
