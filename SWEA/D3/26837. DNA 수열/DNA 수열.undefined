@@ -1,0 +1,60 @@
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.StringTokenizer;
+
+
+public class Solution
+{	
+	
+	
+	
+ 	public static void main(String args[]) throws Exception
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		StringBuilder sb = new StringBuilder();
+		for(int t = 1; t <= T; t++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			int len = Integer.parseInt(st.nextToken());
+			String s = st.nextToken();
+			
+			// 주어진 문자열 T를 받으면 앞에서 하나씩 가면서 구간마다 반전 배열이 가능한 개수 찾기
+			// 반전 배열이 가능하려면 구간마다 A와T, C와G 각각의 개수가 같아야함
+			// A,T,C,G를 오른쪽, 왼쪽, 위, 아래 4방향으로 이동할 수 있는 것으로 보고 첫 좌표를 0,0으로 설정
+			// 각 알파벳이 나올때마다 해당 방향으로 이동
+			// 이동할때마다 밟은 좌표 몇번 밟았나 확인, 밟은 수를 ans에 더함, 밟은 수 +1
+			
+			HashMap<String, Integer> map = new HashMap<>(); // <좌표(AT증감량, CG증감량), 밟은 횟수>  저장
+			int d1 = 0; // A가 나오면 +1 T가 나오면 -1
+			int d2 = 0; // C가 나오면 +1 T가 나오면 -1
+			
+			map.put("0,0", 1);
+			
+			int answer = 0;
+			
+			for(int k = 0; k < len; k++) {
+				char c = s.charAt(k);
+				if(c == 'A') d1++;
+				else if(c == 'T') d1--;
+				else if(c == 'C') d2++;
+				else d2--;
+				
+				String key = d1 + "," + d2;
+				
+				int count = map.getOrDefault(key, 0);
+				
+				answer += count;
+				map.put(key, count+1);
+				
+				
+			}
+			sb.append(answer).append("\n");
+			
+		}
+		System.out.print(sb);
+		
+	}
+}
