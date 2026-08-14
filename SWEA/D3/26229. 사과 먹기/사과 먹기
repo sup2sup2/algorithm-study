@@ -1,0 +1,129 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+
+
+public class Solution {	
+	static int n;
+	static int[] appX;
+	static int[] appY;
+	static int appcnt;
+	
+	static int[] dx = {0,1,0,-1};
+	static int[] dy = {1,0,-1,0};
+	
+	static int startX, startY;
+	static int endX, endY;
+	static int dir;
+	static int rotation;
+	
+	
+	static void tenkai(int[][] map, boolean[][] visited, int x, int y, int mapX, int mapY) {
+		visited[x][y] = true;
+		
+		int curx = x;
+		int cury = y;
+		
+		while(true) {
+			visited[curx][cury] = true;
+			if(curx == endX && cury == endY) {
+				
+				break;
+			}
+			int fx = curx + dx[dir];
+			int fy = cury + dy[dir];
+			while(fx < 0 || fx >= mapX || fy < 0 || fy >= mapY || visited[fx][fy]) {
+
+				dir++;
+				if(dir >= 4) {
+					dir = 0;
+				}
+				rotation++;
+				fx = curx + dx[dir];
+				fy = cury + dy[dir];
+				
+			}
+			curx = fx;
+			cury = fy;
+		}
+		
+		return;
+		
+	}
+	
+	
+ 	public static void main(String args[]) throws Exception
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		StringBuilder sb = new StringBuilder();
+		for(int t = 1; t <= T; t++) {
+			n = Integer.parseInt(br.readLine());
+			appX = new int[11];
+			appY = new int[11];
+			appcnt = 0;
+			// 사과 좌표 저장
+			for(int i = 0; i < n; i++) {
+				StringTokenizer st = new StringTokenizer(br.readLine());
+				for(int j = 0; j < n; j++) {
+					int a = Integer.parseInt(st.nextToken());
+					if(a>0) {
+						appX[a] = i;
+						appY[a] = j; 
+						appcnt++;
+					}
+				}
+			}
+			rotation = 0;
+			
+			startX = 0;
+			startY = 0;
+			endX = 0;
+			endY = 0;
+			dir = 0;
+			
+			//하나씩 빼고 영역전개
+			for(int i = 1; i <= appcnt; i++) {
+				if(i == 1) {
+					startX = 0;
+					startY = 0;
+				}else {
+					startX = appX[i-1];
+					startY = appY[i-1];
+				}
+				endX = appX[i];
+				endY = appY[i];
+				int mapX = Math.max(startX, endX) - Math.min(startX, endX) + 1;
+				int mapY = Math.max(startY, endY) - Math.min(startY, endY) + 1;
+				int map[][] = new int[mapX][mapY];
+				boolean[][] visited = new boolean[mapX][mapY];
+				
+				if(startX > endX) {
+					startX = startX - endX;
+					endX = 0;
+				} else {
+					endX = endX - startX;
+					startX = 0;
+				}
+				if(startY > endY) {
+					startY = startY - endY;
+					endY = 0;
+				} else {
+					endY = endY - startY;
+					startY = 0;
+				}
+				
+				tenkai(map, visited, startX, startY, mapX, mapY);
+				
+				
+			}
+			
+			sb.append("#").append(t).append(" ").append(rotation).append("\n");
+			
+				
+		}
+		System.out.print(sb);
+		
+	}
+}
