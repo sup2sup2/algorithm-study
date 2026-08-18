@@ -1,0 +1,141 @@
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Main {
+
+    static int n;
+    static int[][] map;
+
+    static int[] dx = {0, 0, 1, -1};
+    static int[] dy = {1, -1, 0, 0};
+
+    static boolean[][] canCapture;
+    static int sum;
+
+    static void dfs(int curX, int curY, int cnt) {
+
+        // 최대 3번까지만 이동
+        if (cnt == 3) {
+            return;
+        }
+
+        // 상하좌우 4방향
+        for (int i = 0; i < 4; i++) {
+
+            int fx = curX + dx[i];
+            int fy = curY + dy[i];
+
+            // 넘어갈 알을 하나 발견했는지
+            boolean jumped = false;
+
+            while (fx >= 0 && fx < n && fy >= 0 && fy < n) {
+
+                // 아직 넘어갈 알을 발견하지 못한 상태
+                if (!jumped) {
+
+                    if (map[fx][fy] == 1) {
+
+                        // 첫 번째 알 발견
+                        // 이 알은 잡는 게 아니라 넘어가는 알
+                        jumped = true;
+                    }
+
+                }
+
+                // 이미 알 하나를 넘어간 상태
+                else {
+
+                    // 빈칸
+                    if (map[fx][fy] == 0) {
+
+                        // 이 위치로 이동 가능
+                        dfs(fx, fy, cnt + 1);
+                    }
+
+                    // 두 번째 알 발견
+                    else if (map[fx][fy] == 1) {
+
+                        // 이 알은 잡을 수 있음
+                        if (!canCapture[fx][fy]) {
+                            canCapture[fx][fy] = true;
+                            sum++;
+                        }
+
+                        // 실제로 이 알을 잡았다고 가정
+                        map[fx][fy] = 0;
+
+                        // 잡은 알의 위치로 포 이동
+                        dfs(fx, fy, cnt + 1);
+
+                        // 다른 경우를 탐색하기 위해 원상 복구
+                        map[fx][fy] = 1;
+
+                        // 두 번째 알 뒤로는 갈 수 없음
+                        break;
+                    }
+                }
+
+                fx += dx[i];
+                fy += dy[i];
+            }
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        BufferedReader br =
+                new BufferedReader(new InputStreamReader(System.in));
+
+        int T = Integer.parseInt(br.readLine());
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int t = 1; t <= T; t++) {
+
+            n = Integer.parseInt(br.readLine());
+
+            map = new int[n][n];
+
+            canCapture = new boolean[n][n];
+
+            int startX = 0;
+            int startY = 0;
+
+            for (int i = 0; i < n; i++) {
+
+                StringTokenizer st =
+                        new StringTokenizer(br.readLine());
+
+                for (int j = 0; j < n; j++) {
+
+                    map[i][j] =
+                            Integer.parseInt(st.nextToken());
+
+                    if (map[i][j] == 2) {
+                        startX = i;
+                        startY = j;
+                    }
+                }
+            }
+
+            // 포가 원래 있던 위치는
+            // 포가 움직이고 난 뒤 빈칸이므로 0으로 처리
+            map[startX][startY] = 0;
+
+            sum = 0;
+
+            dfs(startX, startY, 0);
+
+            sb.append("#")
+              .append(t)
+              .append(" ")
+              .append(sum)
+              .append("\n");
+        }
+
+        System.out.print(sb);
+    }
+}
