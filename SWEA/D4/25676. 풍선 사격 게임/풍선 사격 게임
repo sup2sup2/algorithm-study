@@ -1,0 +1,91 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+
+
+public class Solution {	
+	static int n;
+	static int[] arr; 
+	static int max;
+	static void pang(int cur, int sum, int cnt) {
+		
+		if(cnt == n) {
+			sum += arr[cur];
+			max = Math.max(sum, max);
+			return;
+		}
+		int temp = arr[cur];
+		arr[cur] = -1;
+		int left = cur-1;
+		int right = cur+1;
+		int leftNum = -1;
+		int rightNum = -1;
+		
+		while(left >= 0) {
+			if(arr[left] > 0) {
+				leftNum = arr[left];
+				break;
+			}
+			left--;
+		}
+		while(right < n) {
+			if(arr[right] > 0) {
+				rightNum = arr[right];
+				break;
+			}
+			right++;
+		}
+		
+		if(leftNum > 0 && rightNum > 0) {
+			sum += leftNum * rightNum;
+		} else if(leftNum > 0) {
+			sum += leftNum;
+		} else if(rightNum > 0) {
+			sum += rightNum;
+		}
+		
+		for(int i = 0; i < n; i++) {
+			if(arr[i] > 0) {
+				pang(i, sum, cnt+1);
+			}
+		}
+		
+		arr[cur] = temp;
+		
+	
+	}
+	
+    public static void main(String[] args) throws Exception {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        int T = Integer.parseInt(br.readLine());
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int t = 1; t <= T; t++) {
+        	
+        	n = Integer.parseInt(br.readLine());
+        	
+        	arr = new int[n];
+        	StringTokenizer st = new StringTokenizer(br.readLine());
+        	
+        	for(int i = 0; i < n; i++) {
+        		arr[i] = Integer.parseInt(st.nextToken());
+
+        	}
+        	max = 0;
+        	int sum = 0;
+        	int cnt = 0;
+        	for(int i = 0; i < n; i++) {
+        		pang(i, sum, cnt+1);
+        	}
+        	
+        	sb.append("#").append(t).append(" ").append(max).append("\n");
+        	
+        }
+           
+        System.out.println(sb);
+    }
+}
