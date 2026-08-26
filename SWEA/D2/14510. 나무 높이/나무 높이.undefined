@@ -1,0 +1,59 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Solution {
+
+    static int n;
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+
+        int T = Integer.parseInt(br.readLine());
+
+        for (int t = 1; t <= T; t++) {
+
+            n = Integer.parseInt(br.readLine());
+
+            int[] arr = new int[n];
+            StringTokenizer st = new StringTokenizer(br.readLine());
+
+            int max = 0;
+
+            for (int i = 0; i < n; i++) {
+                arr[i] = Integer.parseInt(st.nextToken());
+                max = Math.max(max, arr[i]);
+            }
+
+            int one = 0;
+            int two = 0;
+
+            // 부족한 높이를 +1과 +2로 나누기
+            for (int i = 0; i < n; i++) {
+                int diff = max - arr[i];
+
+                two += diff / 2;
+                one += diff % 2;
+            }
+
+            // +2가 너무 많다면 +2 하나를 +1 두 개로 변환
+            while (two > one + 1) {
+                two--;
+                one += 2;
+            }
+
+            int ans;
+
+            if (one > two) {
+                ans = one * 2 - 1;
+            } else {
+                ans = two * 2;
+            }
+
+            sb.append("#").append(t).append(" ").append(ans).append("\n");
+        }
+
+        System.out.print(sb);
+    }
+}
