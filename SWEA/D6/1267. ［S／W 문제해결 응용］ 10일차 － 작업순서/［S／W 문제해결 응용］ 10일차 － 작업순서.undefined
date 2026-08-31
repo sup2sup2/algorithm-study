@@ -1,0 +1,78 @@
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Solution
+{	
+	static int v, e;
+	
+	static int[][] cor;
+	static int[] numbers;
+	static boolean[] used;
+	static int[] ans;
+	static int anscount;
+	
+	
+	static void dfs(int c) {
+		used[c] = true;
+
+	    for(int i = 1; i <= v; i++) {
+	        if(cor[c][i] == 0) continue;
+	        if(used[i]) continue;
+
+	        dfs(i);
+	    }
+
+	    ans[anscount++] = c;
+		
+	}
+	
+	
+	public static void main(String args[]) throws Exception
+	{
+		 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		 StringBuilder sb = new StringBuilder();
+		 int T = 10;
+		 for(int t = 1; t <= T; t++) {
+			StringTokenizer st = new StringTokenizer(br.readLine()); 
+			
+			v = Integer.parseInt(st.nextToken());
+			e = Integer.parseInt(st.nextToken());
+			
+			numbers = new int[v+1];
+			used = new boolean[v+1];
+			ans = new int[v+1];
+			anscount = 1;
+			
+			cor = new int[v+1][v+1];
+			
+			st = new StringTokenizer(br.readLine());
+			for(int i = 0; i < e; i++) {
+				int a = Integer.parseInt(st.nextToken());
+				int b = Integer.parseInt(st.nextToken());
+				
+				cor[a][b] = 1;
+				
+				numbers[b]++;
+			}
+			for(int i = 1; i < v+1; i++) {
+				if(numbers[i] == 0) {
+					if(!used[i]) {
+						dfs(i);
+					}
+				}
+			}
+			sb.append("#").append(t).append(" ");
+			for(int i = v; i >= 1; i--){
+			    sb.append(ans[i]).append(" ");
+			}
+			sb.append("\n");
+			
+			
+		 }
+		 System.out.println(sb);
+		 
+	
+	}
+}
